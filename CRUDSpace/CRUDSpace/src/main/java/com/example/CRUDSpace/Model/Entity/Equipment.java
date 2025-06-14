@@ -27,10 +27,10 @@ public class Equipment {
     UUID equipmentId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "space_id", nullable = false)
+    @JoinColumn(name = "space_id")
     Space space;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     String equipmentName;
 
 }

@@ -24,4 +24,5 @@ public interface EquipmentRepository extends JpaRepository<Equipment, UUID> {
             """)
     List<EquipmentWithSpaceDTO> getAllEquipmentWithSpace();
 
+    long countBySpace(Space space);
 }

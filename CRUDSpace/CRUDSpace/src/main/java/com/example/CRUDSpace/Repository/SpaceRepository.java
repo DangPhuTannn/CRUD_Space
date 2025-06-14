@@ -1,5 +1,6 @@
 package com.example.CRUDSpace.Repository;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -36,4 +37,9 @@ public interface SpaceRepository extends JpaRepository<Space, UUID> {
             """)
     Optional<SpaceWithTypeDTO> findSpaceWithTypeDTOById(@Param("spaceId") UUID spaceId);
 
+    List<Space> findAllByType_TypeName(String name);
+
+    List<Space> findAllByType_TypeNameIn(Collection<String> names);
+
+    boolean existsBySpaceName(String spaceName);
 }

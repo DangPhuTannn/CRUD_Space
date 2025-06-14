@@ -1,5 +1,6 @@
 package com.example.CRUDSpace.Repository;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,4 +13,5 @@ public interface TypeRepository extends JpaRepository<Type, UUID> {
 
     boolean existsByTypeName(String typeName);
 
+    Optional<Type> findByTypeName(String typeName);
 }
