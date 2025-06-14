@@ -41,7 +41,7 @@ public class Space {
     @Column(nullable = true)
     UUID parentId;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     String spaceName;
 
     @OneToMany(mappedBy = "space", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
