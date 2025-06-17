@@ -1,10 +1,7 @@
 package com.example.CRUDSpace.Model.Entity;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -13,7 +10,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -23,26 +21,26 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Equipment {
+@Table(name = "equipment_state", uniqueConstraints = @UniqueConstraint(columnNames = { "equipment_id", "value_id" }))
+public class EquipmentState {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(columnDefinition = "uniqueidentifier")
-    UUID equipmentId;
+    @Column(name = "equipment_state_id", columnDefinition = "uniqueidentifier")
+    UUID equipmentStateId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "space_id")
-    Space space;
+    @JoinColumn(name = "equipment_id", nullable = false)
+    Equipment equipment;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "value_id", nullable = false)
+    Value value;
 
     @Column(nullable = false)
-    String equipmentName;
+    String timeStamp;
 
-    @Builder.Default
-    @OneToMany(mappedBy = "equipment", cascade = CascadeType.ALL, orphanRemoval = true)
-    List<EquipmentState> equipmentStates = new ArrayList<>();
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "provider_id")
-    Provider provider;
+    @Column(nullable = false)
+    String valueResponse;
 
 }

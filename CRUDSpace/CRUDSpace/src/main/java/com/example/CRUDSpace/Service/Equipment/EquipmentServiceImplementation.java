@@ -9,7 +9,7 @@ import com.example.CRUDSpace.Exception.AppException;
 import com.example.CRUDSpace.Exception.ErrorCode;
 import com.example.CRUDSpace.Mapper.EquipmentMapper;
 import com.example.CRUDSpace.Model.DTO.Equipment.EquipmentDTO;
-import com.example.CRUDSpace.Model.DTO.Equipment.EquipmentWithSpaceDTO;
+import com.example.CRUDSpace.Model.DTO.Equipment.EquipmentWithAllRelationsDTO;
 import com.example.CRUDSpace.Model.Entity.Equipment;
 import com.example.CRUDSpace.Repository.EquipmentRepository;
 
@@ -40,8 +40,8 @@ public class EquipmentServiceImplementation implements EquipmentServiceInterface
         return equipmentDTOs;
     }
 
-    public List<EquipmentWithSpaceDTO> getAllEquipmentWithSpace() {
-        List<EquipmentWithSpaceDTO> equipments = equipmentRepository.getAllEquipmentWithSpace();
+    public List<EquipmentWithAllRelationsDTO> getAllEquipmentWithSpace() {
+        List<EquipmentWithAllRelationsDTO> equipments = equipmentRepository.getAllEquipmentWithSpace();
 
         return equipments;
     }

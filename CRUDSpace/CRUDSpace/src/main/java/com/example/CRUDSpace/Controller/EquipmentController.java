@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.CRUDSpace.Model.DTO.Api.ApiResponse;
 import com.example.CRUDSpace.Model.DTO.Equipment.EquipmentDTO;
-import com.example.CRUDSpace.Model.DTO.Equipment.EquipmentWithSpaceDTO;
+import com.example.CRUDSpace.Model.DTO.Equipment.EquipmentWithAllRelationsDTO;
 import com.example.CRUDSpace.Service.Equipment.EquipmentServiceInterface;
 
 import lombok.*;
@@ -35,14 +35,14 @@ public class EquipmentController {
     ApiResponse<EquipmentDTO> getEquipmentById(@PathVariable UUID equipmentId) {
         var result = equipmentService.getEquipmentById(equipmentId);
 
-        return ApiResponse.<EquipmentDTO>builder().result(result).build();
+        return ApiResponse.<EquipmentDTO>builder().result(result).build();`
     }
 
-    @GetMapping("/equipmentWithSpace")
-    ApiResponse<List<EquipmentWithSpaceDTO>> getAllEquipmentWithSpace() {
+    @GetMapping("/equipmentWithAllRelations")
+    ApiResponse<List<EquipmentWithAllRelationsDTO>> getAllEquipmentWithSpace() {
         var result = equipmentService.getAllEquipmentWithSpace();
 
-        return ApiResponse.<List<EquipmentWithSpaceDTO>>builder().result(result).build();
+        return ApiResponse.<List<EquipmentWithAllRelationsDTO>>builder().result(result).build();
     }
 
 }

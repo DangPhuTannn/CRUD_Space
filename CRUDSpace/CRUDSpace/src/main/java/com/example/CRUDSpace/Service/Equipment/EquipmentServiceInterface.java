@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import com.example.CRUDSpace.Model.DTO.Equipment.EquipmentDTO;
-import com.example.CRUDSpace.Model.DTO.Equipment.EquipmentWithSpaceDTO;
+import com.example.CRUDSpace.Model.DTO.Equipment.EquipmentWithAllRelationsDTO;
 
 public interface EquipmentServiceInterface {
 
@@ -12,5 +12,5 @@ public interface EquipmentServiceInterface {
 
     List<EquipmentDTO> getAllEquipments();
 
-    List<EquipmentWithSpaceDTO> getAllEquipmentWithSpace();
+    List<EquipmentWithAllRelationsDTO> getAllEquipmentWithSpace();
 }

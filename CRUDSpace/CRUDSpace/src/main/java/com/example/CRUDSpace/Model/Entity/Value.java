@@ -7,15 +7,12 @@ import java.util.UUID;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import lombok.*;
 import lombok.experimental.FieldDefaults;
+import lombok.*;
 
 @Entity
 @Data
@@ -23,26 +20,18 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Equipment {
+public class Value {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(columnDefinition = "uniqueidentifier")
-    UUID equipmentId;
+    UUID valueId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "space_id")
-    Space space;
-
-    @Column(nullable = false)
-    String equipmentName;
+    @Column(nullable = false, unique = true)
+    String valueName;
 
     @Builder.Default
-    @OneToMany(mappedBy = "equipment", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "value", cascade = CascadeType.ALL, orphanRemoval = true)
     List<EquipmentState> equipmentStates = new ArrayList<>();
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "provider_id")
-    Provider provider;
 
 }
