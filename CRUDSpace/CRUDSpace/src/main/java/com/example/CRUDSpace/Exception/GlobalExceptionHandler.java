@@ -1,7 +1,14 @@
 package com.example.CRUDSpace.Exception;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -39,23 +46,42 @@ public class GlobalExceptionHandler {
                 .message(errorCode.getMessage()).build());
     }
 
-    @SuppressWarnings({ "rawtypes", "null" })
-    @ExceptionHandler(value = MethodArgumentNotValidException.class)
-    ResponseEntity<ApiResponse> handlingValidation(MethodArgumentNotValidException exception) {
-        String enumKey = exception.getFieldError().getDefaultMessage();
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ApiResponse<Map<String, Object>>> handleValidationException(
+            MethodArgumentNotValidException ex) {
 
-        ErrorCode errorCode = ErrorCode.KEY_INVALID;
-        try {
-            errorCode = ErrorCode.valueOf(enumKey);
-        } catch (IllegalArgumentException e) {
+        List<FieldError> fieldErrors = ex.getBindingResult().getFieldErrors();
 
+        List<Map<String, Object>> errorDetails = new ArrayList<>();
+        ErrorCode finalErrorCode = ErrorCode.KEY_INVALID;
+
+        for (FieldError error : fieldErrors) {
+            String errorKey = error.getDefaultMessage();
+            ErrorCode errorCode;
+            try {
+                errorCode = ErrorCode.valueOf(errorKey);
+            } catch (IllegalArgumentException e) {
+                errorCode = ErrorCode.KEY_INVALID;
+            }
+
+            if (finalErrorCode == ErrorCode.KEY_INVALID) {
+                finalErrorCode = errorCode;
+            }
+
+            Map<String, Object> err = new HashMap<>();
+            err.put("field", error.getField());
+            err.put("errorCode", errorCode.name());
+            err.put("message", errorCode.getMessage());
+            errorDetails.add(err);
         }
 
-        ApiResponse apiResponse = new ApiResponse();
+        ApiResponse<Map<String, Object>> response = ApiResponse.<Map<String, Object>>builder()
+                .code(finalErrorCode.getCode())
+                .message(finalErrorCode.getMessage())
+                .result(Map.of("errors", errorDetails))
+                .build();
 
-        apiResponse.setCode(errorCode.getCode());
-        apiResponse.setMessage(errorCode.getMessage());
-        return ResponseEntity.badRequest().body(apiResponse);
+        return ResponseEntity.status(finalErrorCode.getStatusCode()).body(response);
     }
 
 }

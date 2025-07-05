@@ -21,29 +21,28 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Table(name = "equipment_state", uniqueConstraints = @UniqueConstraint(columnNames = { "equipment_id", "value_id" }))
-public class EquipmentState {
+@Table(name = "material_units", uniqueConstraints = @UniqueConstraint(columnNames = { "space_id", "material_id" }))
+public class MaterialUnits {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "equipment_state_id", columnDefinition = "uniqueidentifier")
-    UUID equipmentStateId;
-
-    @Column(nullable = false)
-    String deviceId;
+    @Column(name = "material_units_id", columnDefinition = "uniqueidentifier")
+    UUID materialUnitsId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "equipment_id", nullable = false)
-    Equipment equipment;
+    @JoinColumn(name = "space_id", nullable = false)
+    Space space;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "value_id", nullable = false)
-    Value value;
+    @JoinColumn(name = "material_id", nullable = false)
+    Material material;
 
-    @Column(nullable = false)
-    String timeStamp;
+    @Builder.Default
+    int totalUnits = 0;
 
-    @Column(nullable = false)
-    String valueResponse;
+    @Builder.Default
+    int availableUnits = 0;
 
+    @Builder.Default
+    int unitsFromChildren = 0;
 }

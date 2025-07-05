@@ -5,13 +5,16 @@ import java.util.UUID;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.CRUDSpace.Model.DTO.Api.ApiResponse;
+import com.example.CRUDSpace.Model.DTO.Space.MaterialsInSpaceDTO;
 import com.example.CRUDSpace.Model.DTO.Space.SpaceDTO;
 import com.example.CRUDSpace.Model.DTO.Space.SpaceWithChildrenDTO;
 import com.example.CRUDSpace.Model.DTO.Space.SpaceWithTypeDTO;
+import com.example.CRUDSpace.Model.Entity.Space;
 import com.example.CRUDSpace.Service.Space.SpaceServiceInterface;
 
 import lombok.*;
@@ -27,6 +30,7 @@ public class SpaceController {
     @GetMapping
     ApiResponse<List<SpaceDTO>> getAllSpace() {
         var result = spaceService.getAllSpaces();
+
         return ApiResponse.<List<SpaceDTO>>builder()
                 .result(result)
                 .build();
@@ -59,4 +63,21 @@ public class SpaceController {
 
         return ApiResponse.<SpaceWithTypeDTO>builder().result(result).build();
     }
+
+    @GetMapping("/{spaceId}/getAllMaterials")
+    ApiResponse<List<MaterialsInSpaceDTO>> getAllMaterialsInInventory(@PathVariable UUID spaceId) {
+        var result = spaceService.getAllMaterialsInInventory(spaceId);
+
+        return ApiResponse.<List<MaterialsInSpaceDTO>>builder()
+                .result(result)
+                .build();
+    }
+
+    @PostMapping("/{spaceId}/addingInventory")
+    ApiResponse<String> addInventoryBySpaceId(@PathVariable UUID spaceId) {
+        var result = spaceService.addInventoryBySpaceId(spaceId);
+
+        return ApiResponse.<String>builder().result(result).build();
+    }
+
 }

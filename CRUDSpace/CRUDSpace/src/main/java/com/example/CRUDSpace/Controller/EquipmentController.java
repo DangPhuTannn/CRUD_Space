@@ -35,7 +35,7 @@ public class EquipmentController {
     ApiResponse<EquipmentDTO> getEquipmentById(@PathVariable UUID equipmentId) {
         var result = equipmentService.getEquipmentById(equipmentId);
 
-        return ApiResponse.<EquipmentDTO>builder().result(result).build();`
+        return ApiResponse.<EquipmentDTO>builder().result(result).build();
     }
 
     @GetMapping("/equipmentWithAllRelations")

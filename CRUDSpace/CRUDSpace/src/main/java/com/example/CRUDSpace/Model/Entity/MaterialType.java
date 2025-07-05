@@ -7,12 +7,9 @@ import java.util.UUID;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -23,29 +20,20 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Equipment {
+public class MaterialType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(columnDefinition = "uniqueidentifier")
-    UUID equipmentId;
+    UUID materialTypeId;
 
     @Column(nullable = false, unique = true)
-    String deviceId;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "space_id")
-    Space space;
+    String materialTypeName;
 
     @Column(nullable = false)
-    String equipmentName;
+    String measurement;
 
     @Builder.Default
-    @OneToMany(mappedBy = "equipment", cascade = CascadeType.ALL, orphanRemoval = true)
-    List<EquipmentState> equipmentStates = new ArrayList<>();
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "provider_id")
-    Provider provider;
-
+    @OneToMany(mappedBy = "materialType", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<Material> materials = new ArrayList<>();
 }

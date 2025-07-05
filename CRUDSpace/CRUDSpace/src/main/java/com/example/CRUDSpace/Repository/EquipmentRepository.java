@@ -1,10 +1,12 @@
 package com.example.CRUDSpace.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.example.CRUDSpace.Model.DTO.Equipment.EquipmentWithAllRelationsDTO;
 import com.example.CRUDSpace.Model.Entity.Equipment;
@@ -28,6 +30,13 @@ public interface EquipmentRepository extends JpaRepository<Equipment, UUID> {
             Join e.provider p
             """)
     List<EquipmentWithAllRelationsDTO> getAllEquipmentWithSpace();
+
+    @Query("""
+            Select e
+            from Equipment e
+            where e.deviceId = :deviceId
+            """)
+    Optional<Equipment> findByDeviceId(@Param("deviceId") String deviceId);
 
     long countBySpace(Space space);
 }

@@ -1,6 +1,7 @@
 package com.example.CRUDSpace.Repository;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -48,6 +49,15 @@ public interface EquipmentStateRepository extends JpaRepository<EquipmentState, 
             Where es.equipment.equipmentId = :equipmentId
             """)
     List<EquipmentStateDTO> getAllEquipmentStateByEquipmentId(@Param("equipmentId") UUID equipmentId);
+
+    @Query(value = """
+            SELECT * FROM equipment_state
+            WHERE device_id = :deviceId
+              AND value_id IN (:valueIds)
+            """, nativeQuery = true)
+    List<EquipmentState> findAllByEquipmentIdAndValueIdIn(
+            @Param("deviceId") String deviceId,
+            @Param("valueIds") Set<UUID> valueIds);
 
     boolean existsByEquipmentAndValue(Equipment equipment, Value value);
 }

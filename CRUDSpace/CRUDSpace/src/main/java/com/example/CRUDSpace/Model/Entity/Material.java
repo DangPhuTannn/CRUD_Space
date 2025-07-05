@@ -1,7 +1,10 @@
 package com.example.CRUDSpace.Model.Entity;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -10,8 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
+import jakarta.persistence.OneToMany;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -21,29 +23,21 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Table(name = "equipment_state", uniqueConstraints = @UniqueConstraint(columnNames = { "equipment_id", "value_id" }))
-public class EquipmentState {
+public class Material {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "equipment_state_id", columnDefinition = "uniqueidentifier")
-    UUID equipmentStateId;
+    @Column(columnDefinition = "uniqueidentifier")
+    UUID materialId;
 
     @Column(nullable = false)
-    String deviceId;
+    String materialName;
+
+    @Builder.Default
+    @OneToMany(mappedBy = "material", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<MaterialUnits> meterialUnits = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "equipment_id", nullable = false)
-    Equipment equipment;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "value_id", nullable = false)
-    Value value;
-
-    @Column(nullable = false)
-    String timeStamp;
-
-    @Column(nullable = false)
-    String valueResponse;
-
+    @JoinColumn(name = "material_type_id", nullable = false)
+    MaterialType materialType;
 }

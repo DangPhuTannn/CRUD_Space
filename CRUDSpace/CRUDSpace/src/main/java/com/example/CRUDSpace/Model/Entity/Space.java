@@ -44,8 +44,18 @@ public class Space {
     @Column(nullable = false)
     String spaceName;
 
+    String qEnergySiteId;
+
     @OneToMany(mappedBy = "space", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @Builder.Default
     List<Equipment> equipments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "space", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @Builder.Default
+    List<MaterialUnits> materialUnits = new ArrayList<>();
+
+    @OneToMany(mappedBy = "space", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @Builder.Default
+    List<QEnergy> qEnergies = new ArrayList<>();
 
 }
